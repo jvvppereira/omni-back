@@ -8,7 +8,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 mongoose.connect(
-  'mongodb://omni-back-user:user123@ds149034.mlab.com:49034/omni-back',
+  'mongodb://omni-back-user:user123@ds129045.mlab.com:29045/heroku_lhjkr4rz',
   {
     useNewUrlParser: true
   }
