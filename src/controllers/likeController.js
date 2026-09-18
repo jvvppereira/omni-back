@@ -1,4 +1,5 @@
-const tweetSchema = require("../models/tweet");
+const tweetSchema = require('../models/tweet');
+const { broadcast } = require('../utils/sseManager');
 
 module.exports = {
   async store(req, res) {
@@ -10,7 +11,7 @@ module.exports = {
 
     await tweet.save();
 
-    req.io.emit("like", tweet);
+    broadcast('like', tweet);
 
     return res.json(tweet);
   }

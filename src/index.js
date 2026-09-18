@@ -1,28 +1,32 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const { connectDB } = require('./config/db');
+const { addClient, removeClient } = require('./utils/sseManager');
 
 const app = express();
 
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-
-mongoose.connect(
-  process.env.MONGO_OMNI_BACK,
-  {
-    useNewUrlParser: true
-  }
-);
-
 app.use((req, res, next) => {
-  req.io = io;
+  req.sse = { addClient, removeClient };
   return next();
 });
 
 app.use(cors());
 app.use(express.json());
+
+let dbConnected = false;
+async function ensureDB() {
+  if (!dbConnected) {
+    await connectDB();
+    dbConnected = true;
+  }
+}
+
+app.use(async (req, res, next) => {
+  await ensureDB();
+  next();
+});
+
 app.use(require('./routes'));
 
-server.listen(process.env.PORT || 3000, () => {
-  console.log('Server started on port 3000');
-});
+module.exports = app;

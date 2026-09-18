@@ -1,0 +1,11 @@
+# Dockerfile - Local Development Only (Production uses Vercel)
+FROM node:20-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+
+# Development stage (hot reload via docker-compose)
+FROM base AS development
+RUN npm ci
+COPY . .
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
