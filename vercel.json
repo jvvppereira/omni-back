@@ -4,10 +4,7 @@
     { "src": "src/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/events", "dest": "src/index.js", "headers": { "Cache-Control": "no-cache", "Connection": "keep-alive" } },
+    { "src": "/events", "headers": { "Cache-Control": "no-cache", "Connection": "keep-alive" }, "dest": "src/index.js" },
     { "src": "/(.*)", "dest": "src/index.js" }
-  ],
-  "functions": {
-    "src/index.js": { "maxDuration": 30 }
-  }
+  ]
 }
